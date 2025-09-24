@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XOX Oyunu - Mera AI'ya Karşı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .mera-ai-box {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            border-radius: 15px;
+            padding: 10px 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .mera-ai-box:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .mera-ai-box img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        
+        .mera-ai-box span {
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        header {
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 5px solid #f1c40f;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="white" stroke-width="2"/><path d="M30,30 L70,30 L70,70 L30,70 Z" fill="none" stroke="white" stroke-width="2"/><path d="M40,40 L60,40 L60,60 L40,60 Z" fill="none" stroke="white" stroke-width="2"/></svg>');
+            animation: backgroundMove 20s linear infinite;
+        }
+        
+        @keyframes backgroundMove {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-100px) translateY(-100px); }
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .game-area {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 25px;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .score-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .score-label {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .score-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .round-info {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 25px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease-out 0.2s both;
+        }
+        
+        .player {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .player-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+        
+        .player.active .player-icon {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.7);
+        }
+        
+        .player-x .player-icon {
+            background-color: #e74c3c;
+        }
+        
+        .player-o .player-icon {
+            background-color: #3498db;
+        }
+        
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 12px;
+            margin: 20px 0;
+            max-width: 400px;
+            width: 100%;
+            animation: zoomIn 0.5s ease-out 0.4s both;
+        }
+        
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .cell {
+            aspect-ratio: 1;
+            background-color: #ecf0f1;
+            border: none;
+            border-radius: 10px;
+            font-size: 3.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cell::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cell:hover::before {
+            left: 100%;
+        }
+        
+        .cell:hover {
+            background-color: #d6dbdf;
+            transform: translateY(-3px) rotate(2deg);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cell.x {
+            color: #e74c3c;
+            animation: xAppear 0.5s ease-out;
+        }
+        
+        @keyframes xAppear {
+            0% { transform: scale(0) rotate(180deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        
+        .cell.o {
+            color: #3498db;
+            animation: oAppear 0.5s ease-out;
+        }
+        
+        @keyframes oAppear {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .cell.win {
+            background-color: #2ecc71;
+            color: white;
+            animation: pulse 1s infinite, glow 1.5s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 10px #2ecc71; }
+            to { box-shadow: 0 0 20px #2ecc71; }
+        }
+        
+        .message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            min-height: 40px;
+            text-align: center;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .message.win {
+            background-color: #2ecc71;
+            color: white;
+            animation: celebrate 0.5s ease-out;
+        }
+        
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .message.lose {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .message.draw {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: slideIn 0.5s ease-out 0.6s both;
+        }
+        
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1) translate(-50%, -50%);
+            transform-origin: 50% 50%;
+        }
+        
+        button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% { transform: scale(0) translate(-50%, -50%); opacity: 1; }
+            100% { transform: scale(20) translate(-50%, -50%); opacity: 0; }
+        }
+        
+        #restart {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            color: white;
+        }
+        
+        #restart:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .difficulty {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        select {
+            padding: 10px 15px;
+            border-radius: 50px;
+            border: 2px solid #3498db;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        select:hover {
+            border-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .medals {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            animation: slideIn 0.5s ease-out 0.8s both;
+        }
+        
+        .medal {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .medal.gold {
+            background: linear-gradient(45deg, #FFD700, #D4AF37);
+        }
+        
+        .medal.silver {
+            background: linear-gradient(45deg, #C0C0C0, #A8A8A8);
+        }
+        
+        .medal.bronze {
+            background: linear-gradient(45deg, #CD7F32, #8C6B46);
+        }
+        
+        .medal.inactive {
+            opacity: 0.3;
+            transform: scale(0.8);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .game-board {
+                max-width: 300px;
+            }
+            
+            .cell {
+                font-size: 2.5rem;
+            }
+            
+            .mera-ai-box {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 0 auto 20px;
+                width: fit-content;
+            }
+            
+            .score-board {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="https://www.example.com" target="_blank" class="mera-ai-box">
+            <img src="https://media.giphy.com/media/l0HlOBZcl7sbV6LnO/giphy.gif" alt="Mera AI">
+            <span>Mera AI</span>
+        </a>
+        
+        <header>
+            <h1>XOX Oyunu</h1>
+            <p class="subtitle">Yapay Zeka Mera'ya Karşı - 5 Tur</p>
+        </header>
+        
+        <div class="game-area">
+            <div class="score-board">
+                <div class="score-item">
+                    <div class="score-label">Sen</div>
+                    <div class="score-value" id="player-score">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Tur</div>
+                    <div class="score-value" id="round">1/5</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Mera AI</div>
+                    <div class="score-value" id="ai-score">0</div>
+                </div>
+            </div>
+            
+            <div class="round-info" id="round-info">1. Tur - Senin Hamlen!</div>
+            
+            <div class="game-info">
+                <div class="player player-x active">
+                    <div class="player-icon">X</div>
+                    <span>Sen</span>
+                </div>
+                <div class="player player-o">
+                    <div class="player-icon">O</div>
+                    <span>Mera AI</span>
+                </div>
+            </div>
+            
+            <div class="message" id="message">İlk hamle senin! X ile başlıyorsun.</div>
+            
+            <div class="game-board" id="board">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+            
+            <div class="medals">
+                <div class="medal gold inactive" id="gold-medal">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <div class="medal silver inactive" id="silver-medal">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <div class="medal bronze inactive" id="bronze-medal">
+                    <i class="fas fa-medal"></i>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="restart">Yeniden Başlat</button>
+                
+                <div class="difficulty">
+                    <label for="difficulty">Zorluk:</label>
+                    <select id="difficulty">
+                        <option value="easy">Kolay</option>
+                        <option value="medium" selected>Orta</option>
+                        <option value="hard">Zor</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Mera AI ile XOX Oyunu | Tüm hakları saklıdır © 2023</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const board = document.getElementById('board');
+            const cells = document.querySelectorAll('.cell');
+            const message = document.getElementById('message');
+            const restartBtn = document.getElementById('restart');
+            const difficultySelect = document.getElementById('difficulty');
+            const playerScoreElem = document.getElementById('player-score');
+            const aiScoreElem = document.getElementById('ai-score');
+            const roundElem = document.getElementById('round');
+            const roundInfoElem = document.getElementById('round-info');
+            const goldMedal = document.getElementById('gold-medal');
+            const silverMedal = document.getElementById('silver-medal');
+            const bronzeMedal = document.getElementById('bronze-medal');
+            const playerX = document.querySelector('.player-x');
+            const playerO = document.querySelector('.player-o');
+            
+            let currentPlayer = 'X';
+            let gameBoard = ['', '', '', '', '', '', '', '', ''];
+            let gameActive = true;
+            let difficulty = 'medium';
+            let playerScore = 0;
+            let aiScore = 0;
+            let round = 1;
+            const totalRounds = 5;
+            
+            // Kazanma kombinasyonları
+            const winningConditions = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Yatay
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Dikey
+                [0, 4, 8], [2, 4, 6]             // Çapraz
+            ];
+            
+            // Oyunu başlat
+            initGame();
+            
+            // Hücre tıklama olayı
+            cells.forEach(cell => {
+                cell.addEventListener('click', handleCellClick);
+            });
+            
+            // Yeniden başlat butonu
+            restartBtn.addEventListener('click', restartGame);
+            
+            // Zorluk seviyesi değişikliği
+            difficultySelect.addEventListener('change', (e) => {
+                difficulty = e.target.value;
+                restartGame();
+            });
+            
+            function initGame() {
+                updateScores();
+                updateRoundInfo();
+                resetMedals();
+            }
+            
+            function handleCellClick(e) {
+                const clickedCell = e.target;
+                const cellIndex = parseInt(clickedCell.getAttribute('data-index'));
+                
+                // Hücre zaten doluysa veya oyun aktif değilse işlem yapma
+                if (gameBoard[cellIndex] !== '' || !gameActive) {
+                    return;
+                }
+                
+                // İnsan hamlesini yap
+                makeMove(cellIndex, 'X');
+                setActivePlayer('O');
+                
+                // Oyun bitti mi kontrol et
+                if (checkGameStatus()) return;
+                
+                // Mera'nın hamlesi
+                setTimeout(() => {
+                    if (gameActive) {
+                        message.textContent = "Mera düşünüyor...";
+                        message.className = "message";
+                        
+                        setTimeout(() => {
+                            makeAIMove();
+                            setActivePlayer('X');
+                            checkGameStatus();
+                        }, 800);
+                    }
+                }, 500);
+            }
+            
+            function makeMove(index, player) {
+                gameBoard[index] = player;
+                cells[index].textContent = player;
+                cells[index].classList.add(player.toLowerCase());
+            }
+            
+            function setActivePlayer(player) {
+                if (player === 'X') {
+                    playerX.classList.add('active');
+                    playerO.classList.remove('active');
+                } else {
+                    playerO.classList.add('active');
+                    playerX.classList.remove('active');
+                }
+            }
+            
+            function makeAIMove() {
+                let moveIndex;
+                
+                switch(difficulty) {
+                    case 'easy':
+                        moveIndex = getRandomMove();
+                        break;
+                    case 'medium':
+                        moveIndex = getMediumAIMove();
+                        break;
+                    case 'hard':
+                        moveIndex = getHardAIMove();
+                        break;
+                    default:
+                        moveIndex = getMediumAIMove();
+                }
+                
+                makeMove(moveIndex, 'O');
+                message.textContent = "Sıra sende!";
+                message.className = "message";
+            }
+            
+            function getRandomMove() {
+                const emptyCells = gameBoard
+                    .map((cell, index) => cell === '' ? index : null)
+                    .filter(index => index !== null);
+                
+                return emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            }
+            
+            function getMediumAIMove() {
+                // Önce kazanma fırsatını kontrol et
+                for (let condition of winningConditions) {
+                    const [a, b, c] = condition;
+                    if (gameBoard[a] === 'O' && gameBoard[b] === 'O' && gameBoard[c] === '') return c;
+                    if (gameBoard[a] === 'O' && gameBoard[c] === 'O' && gameBoard[b] === '') return b;
+                    if (gameBoard[b] === 'O' && gameBoard[c] === 'O' && gameBoard[a] === '') return a;
+                }
+                
+                // Sonra rakibin kazanma fırsatını engelle
+                for (let condition of winningConditions) {
+                    const [a, b, c] = condition;
+                    if (gameBoard[a] === 'X' && gameBoard[b] === 'X' && gameBoard[c] === '') return c;
+                    if (gameBoard[a] === 'X' && gameBoard[c] === 'X' && gameBoard[b] === '') return b;
+                    if (gameBoard[b] === 'X' && gameBoard[c] === 'X' && gameBoard[a] === '') return a;
+                }
+                
+                // Merkezi kontrol et
+                if (gameBoard[4] === '') return 4;
+                
+                // Köşeleri kontrol et
+                const corners = [0, 2, 6, 8];
+                const emptyCorners = corners.filter(index => gameBoard[index] === '');
+                if (emptyCorners.length > 0) {
+                    return emptyCorners[Math.floor(Math.random() * emptyCorners.length)];
+                }
+                
+                // Rastgele hamle yap
+                return getRandomMove();
+            }
+            
+            function getHardAIMove() {
+                // Minimax algoritması kullanarak en iyi hamleyi bul
+                let bestScore = -Infinity;
+                let bestMove;
+                
+                for (let i = 0; i < 9; i++) {
+                    if (gameBoard[i] === '') {
+                        gameBoard[i] = 'O';
+                        let score = minimax(gameBoard, 0, false);
+                        gameBoard[i] = '';
+                        
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestMove = i;
+                        }
+                    }
+                }
+                
+                return bestMove;
+            }
+            
+            function minimax(board, depth, isMaximizing) {
+                // Oyunun bitip bitmediğini kontrol et
+                const result = checkWinner();
+                if (result !== null) {
+                    if (result === 'O') return 10 - depth;
+                    if (result === 'X') return depth - 10;
+                    return 0;
+                }
+                
+                if (isMaximizing) {
+                    let bestScore = -Infinity;
+                    for (let i = 0; i < 9; i++) {
+                        if (board[i] === '') {
+                            board[i] = 'O';
+                            let score = minimax(board, depth + 1, false);
+                            board[i] = '';
+                            bestScore = Math.max(score, bestScore);
+                        }
+                    }
+                    return bestScore;
+                } else {
+                    let bestScore = Infinity;
+                    for (let i = 0; i < 9; i++) {
+                        if (board[i] === '') {
+                            board[i] = 'X';
+                            let score = minimax(board, depth + 1, true);
+                            board[i] = '';
+                            bestScore = Math.min(score, bestScore);
+                        }
+                    }
+                    return bestScore;
+                }
+            }
+            
+            function checkGameStatus() {
+                const winner = checkWinner();
+                
+                if (winner) {
+                    gameActive = false;
+                    
+                    // Kazanan hücreleri vurgula
+                    for (let condition of winningConditions) {
+                        const [a, b, c] = condition;
+                        if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                            cells[a].classList.add('win');
+                            cells[b].classList.add('win');
+                            cells[c].classList.add('win');
+                        }
+                    }
+                    
+                    if (winner === 'X') {
+                        message.textContent = `Tebrikler! ${round}. turu kazandın!`;
+                        message.className = "message win";
+                        playerScore++;
+                        celebrateWin();
+                    } else {
+                        message.textContent = `Mera ${round}. turu kazandı!`;
+                        message.className = "message lose";
+                        aiScore++;
+                    }
+                    
+                    updateScores();
+                    
+                    // Bir sonraki tura geç
+                    setTimeout(() => {
+                        if (round < totalRounds) {
+                            round++;
+                            updateRoundInfo();
+                            resetBoard();
+                        } else {
+                            endGame();
+                        }
+                    }, 2000);
+                    
+                    return true;
+                } else if (!gameBoard.includes('')) {
+                    gameActive = false;
+                    message.textContent = `${round}. tur berabere!`;
+                    message.className = "message draw";
+                    
+                    // Bir sonraki tura geç
+                    setTimeout(() => {
+                        if (round < totalRounds) {
+                            round++;
+                            updateRoundInfo();
+                            resetBoard();
+                        } else {
+                            endGame();
+                        }
+                    }, 2000);
+                    
+                    return true;
+                }
+                
+                return false;
+            }
+            
+            function celebrateWin() {
+                // Kazanma animasyonu
+                const confettiCount = 100;
+                const confettiColors = ['#f1c40f', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6'];
+                
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.top = '0';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.opacity = '0';
+                    confetti.style.zIndex = '9999';
+                    document.body.appendChild(confetti);
+                    
+                    // Animasyon
+                    const animation = confetti.animate([
+                        { top: '0', opacity: 1, transform: 'rotate(0deg)' },
+                        { top: '100vh', opacity: 0, transform: 'rotate(360deg)' }
+                    ], {
+                        duration: Math.random() * 3000 + 2000,
+                        easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
+                    });
+                    
+                    animation.onfinish = () => confetti.remove();
+                }
+            }
+            
+            function checkWinner() {
+                for (let condition of winningConditions) {
+                    const [a, b, c] = condition;
+                    if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                        return gameBoard[a];
+                    }
+                }
+                return null;
+            }
+            
+            function resetBoard() {
+                gameBoard = ['', '', '', '', '', '', '', '', ''];
+                gameActive = true;
+                currentPlayer = 'X';
+                setActivePlayer('X');
+                
+                cells.forEach(cell => {
+                    cell.textContent = '';
+                    cell.classList.remove('x', 'o', 'win');
+                });
+                
+                message.textContent = `${round}. tur - Senin hamlen!`;
+                message.className = "message";
+            }
+            
+            function restartGame() {
+                playerScore = 0;
+                aiScore = 0;
+                round = 1;
+                updateScores();
+                updateRoundInfo();
+                resetBoard();
+                resetMedals();
+            }
+            
+            function updateScores() {
+                playerScoreElem.textContent = playerScore;
+                aiScoreElem.textContent = aiScore;
+                roundElem.textContent = `${round}/${totalRounds}`;
+            }
+            
+            function updateRoundInfo() {
+                roundInfoElem.textContent = `${round}. Tur - ${currentPlayer === 'X' ? 'Senin Hamlen!' : 'Mera Hamlesi'}`;
+            }
+            
+            function resetMedals() {
+                goldMedal.classList.add('inactive');
+                silverMedal.classList.add('inactive');
+                bronzeMedal.classList.add('inactive');
+            }
+            
+            function endGame() {
+                // Madalyaları göster
+                if (playerScore > aiScore) {
+                    message.textContent = `Tebrikler! 5 tur sonunda ${playerScore}-${aiScore} kazandın!`;
+                    message.className = "message win";
+                    goldMedal.classList.remove('inactive');
+                } else if (aiScore > playerScore) {
+                    message.textContent = `Maalesef! 5 tur sonunda ${aiScore}-${playerScore} kaybettin!`;
+                    message.className = "message lose";
+                    silverMedal.classList.remove('inactive');
+                } else {
+                    message.textContent = `5 tur sonunda ${playerScore}-${aiScore} berabere!`;
+                    message.className = "message draw";
+                    bronzeMedal.classList.remove('inactive');
+                }
+                
+                // Oyunu tamamen sıfırla butonu
+                setTimeout(() => {
+                    restartBtn.textContent = "Yeni Maç Başlat";
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
