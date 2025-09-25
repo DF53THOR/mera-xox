@@ -13,79 +13,119 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff6b6b;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+        }
+        
         body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
             overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.05"><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="white" stroke-width="2"/><path d="M30,30 L70,30 L70,70 L30,70 Z" fill="none" stroke="white" stroke-width="2"/><path d="M40,40 L60,40 L60,60 L40,60 Z" fill="none" stroke="white" stroke-width="2"/></svg>');
+            animation: backgroundMove 30s linear infinite;
+        }
+        
+        @keyframes backgroundMove {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-100px) translateY(-100px); }
         }
         
         .container {
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
             background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             position: relative;
-            animation: fadeIn 1s ease-out;
+            animation: fadeIn 1.5s ease-out;
+            z-index: 1;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         
         .mera-ai-box {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #ff6b6b, #ffa726);
-            border-radius: 15px;
-            padding: 10px 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            top: 25px;
+            right: 25px;
+            background: linear-gradient(45deg, var(--accent), #ffa726);
+            border-radius: 20px;
+            padding: 12px 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
             z-index: 10;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
-            animation: pulse 2s infinite;
+            gap: 12px;
+            animation: pulse 3s infinite, float 6s ease-in-out infinite;
+            border: 2px solid rgba(255, 255, 255, 0.5);
         }
         
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% { box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); }
+            50% { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); }
+            100% { box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
         }
         
         .mera-ai-box:hover {
             transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+            animation: none;
         }
         
         .mera-ai-box img {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            border: 2px solid white;
+            border: 3px solid white;
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
         }
         
         .mera-ai-box span {
             color: white;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 18px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
         
         header {
-            background: linear-gradient(to right, #3498db, #2c3e50);
+            background: linear-gradient(to right, var(--info), var(--dark));
             color: white;
             text-align: center;
-            padding: 30px 20px;
-            border-bottom: 5px solid #f1c40f;
+            padding: 40px 20px;
+            border-bottom: 8px solid #f1c40f;
             position: relative;
             overflow: hidden;
         }
@@ -101,154 +141,215 @@
             animation: backgroundMove 20s linear infinite;
         }
         
-        @keyframes backgroundMove {
-            0% { transform: translateX(0) translateY(0); }
-            100% { transform: translateX(-100px) translateY(-100px); }
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+            background: linear-gradient(to right, #fff, #f1c40f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s ease-in-out infinite alternate;
         }
         
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            position: relative;
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+            to { filter: drop-shadow(0 0 15px rgba(255,255,255,0.8)); }
         }
         
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             opacity: 0.9;
             position: relative;
+            font-weight: 300;
         }
         
         .game-area {
-            padding: 30px;
+            padding: 40px 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         
-        .score-board {
+        .stats-container {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             width: 100%;
-            max-width: 600px;
-            margin-bottom: 25px;
-            background: linear-gradient(to right, #f8f9fa, #e9ecef);
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.5s ease-out;
+            margin-bottom: 30px;
+            gap: 20px;
         }
         
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .score-item {
-            text-align: center;
+        .stat-card {
             flex: 1;
+            background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+            border-left: 5px solid var(--info);
         }
         
-        .score-label {
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card.win {
+            border-left-color: var(--success);
+        }
+        
+        .stat-card.lose {
+            border-left-color: var(--danger);
+        }
+        
+        .stat-label {
             font-size: 1rem;
             color: #6c757d;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
         
-        .score-value {
-            font-size: 2rem;
+        .stat-value {
+            font-size: 2.5rem;
             font-weight: bold;
-            color: #2c3e50;
+            color: var(--dark);
         }
         
         .round-info {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            color: #e74c3c;
-            margin-bottom: 15px;
-            animation: bounce 1s infinite;
+            color: var(--accent);
+            margin-bottom: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(to right, rgba(255,107,107,0.1), rgba(255,167,38,0.1));
+            border-radius: 50px;
+            animation: bounce 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .round-info::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
         
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-8px); }
         }
         
         .game-info {
             display: flex;
             justify-content: space-between;
             width: 100%;
-            max-width: 500px;
-            margin-bottom: 25px;
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.5s ease-out 0.2s both;
+            max-width: 600px;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.8s ease-out 0.3s both;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .player {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 1.2rem;
+            gap: 15px;
+            font-size: 1.4rem;
             font-weight: bold;
+            transition: all 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+        
+        .player.active {
+            background: rgba(52, 152, 219, 0.1);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
         }
         
         .player-icon {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
             color: white;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         }
         
         .player.active .player-icon {
             transform: scale(1.2);
-            box-shadow: 0 0 15px rgba(52, 152, 219, 0.7);
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.7);
+            animation: iconPulse 1.5s infinite;
+        }
+        
+        @keyframes iconPulse {
+            0% { box-shadow: 0 0 10px rgba(52, 152, 219, 0.7); }
+            50% { box-shadow: 0 0 20px rgba(52, 152, 219, 0.9); }
+            100% { box-shadow: 0 0 10px rgba(52, 152, 219, 0.7); }
         }
         
         .player-x .player-icon {
-            background-color: #e74c3c;
+            background: linear-gradient(45deg, var(--danger), #c0392b);
         }
         
         .player-o .player-icon {
-            background-color: #3498db;
+            background: linear-gradient(45deg, var(--info), #2980b9);
         }
         
         .game-board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-gap: 12px;
-            margin: 20px 0;
-            max-width: 400px;
+            grid-gap: 15px;
+            margin: 30px 0;
+            max-width: 450px;
             width: 100%;
-            animation: zoomIn 0.5s ease-out 0.4s both;
+            animation: zoomIn 0.8s ease-out 0.5s both;
+            background: rgba(52, 152, 219, 0.05);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
         }
         
         @keyframes zoomIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+            to { opacity: 1; transform: scale(1) rotate(0deg); }
         }
         
         .cell {
             aspect-ratio: 1;
-            background-color: #ecf0f1;
+            background: linear-gradient(to bottom right, #fff, #f8f9fa);
             border: none;
-            border-radius: 10px;
-            font-size: 3.5rem;
+            border-radius: 15px;
+            font-size: 4rem;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
         }
@@ -260,7 +361,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
             transition: left 0.5s;
         }
         
@@ -269,100 +370,114 @@
         }
         
         .cell:hover {
-            background-color: #d6dbdf;
-            transform: translateY(-3px) rotate(2deg);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+            transform: translateY(-5px) rotate(2deg);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
         }
         
         .cell.x {
-            color: #e74c3c;
-            animation: xAppear 0.5s ease-out;
+            color: var(--danger);
+            animation: xAppear 0.6s ease-out;
         }
         
         @keyframes xAppear {
-            0% { transform: scale(0) rotate(180deg); }
-            100% { transform: scale(1) rotate(0deg); }
+            0% { transform: scale(0) rotate(180deg); opacity: 0; }
+            70% { transform: scale(1.1) rotate(-10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
         
         .cell.o {
-            color: #3498db;
-            animation: oAppear 0.5s ease-out;
+            color: var(--info);
+            animation: oAppear 0.6s ease-out;
         }
         
         @keyframes oAppear {
-            0% { transform: scale(0); }
+            0% { transform: scale(0); opacity: 0; }
             70% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            100% { transform: scale(1); opacity: 1; }
         }
         
         .cell.win {
-            background-color: #2ecc71;
+            background: linear-gradient(45deg, var(--success), #27ae60);
             color: white;
             animation: pulse 1s infinite, glow 1.5s infinite alternate;
+            transform: scale(1.1);
         }
         
         @keyframes glow {
-            from { box-shadow: 0 0 10px #2ecc71; }
-            to { box-shadow: 0 0 20px #2ecc71; }
+            from { box-shadow: 0 0 15px var(--success); }
+            to { box-shadow: 0 0 25px var(--success); }
+        }
+        
+        .message-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px 0;
+            position: relative;
         }
         
         .message {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: bold;
-            margin: 20px 0;
-            min-height: 40px;
+            min-height: 60px;
             text-align: center;
-            padding: 10px 20px;
-            border-radius: 10px;
-            background-color: #f8f9fa;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 500px;
             animation: slideIn 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .message.win {
-            background-color: #2ecc71;
+            background: linear-gradient(45deg, var(--success), #27ae60);
             color: white;
-            animation: celebrate 0.5s ease-out;
+            animation: celebrate 0.8s ease-out;
         }
         
         @keyframes celebrate {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
         }
         
         .message.lose {
-            background-color: #e74c3c;
+            background: linear-gradient(45deg, var(--danger), #c0392b);
             color: white;
         }
         
         .message.draw {
-            background-color: #f39c12;
+            background: linear-gradient(45deg, var(--warning), #e67e22);
             color: white;
         }
         
         .controls {
             display: flex;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 20px;
+            margin-top: 30px;
             flex-wrap: wrap;
             justify-content: center;
-            animation: slideIn 0.5s ease-out 0.6s both;
+            animation: slideIn 0.5s ease-out 0.7s both;
         }
         
         button {
-            padding: 12px 25px;
-            font-size: 1rem;
+            padding: 15px 30px;
+            font-size: 1.1rem;
             font-weight: bold;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         button::after {
@@ -389,94 +504,156 @@
         }
         
         #restart {
-            background: linear-gradient(to right, #2ecc71, #27ae60);
+            background: linear-gradient(to right, var(--success), #27ae60);
             color: white;
         }
         
         #restart:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        #new-game {
+            background: linear-gradient(to right, var(--info), #2980b9);
+            color: white;
+        }
+        
+        #new-game:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
         }
         
         .difficulty {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 15px;
+            margin-top: 20px;
+            background: rgba(52, 152, 219, 0.1);
+            padding: 15px 25px;
+            border-radius: 50px;
         }
         
         select {
-            padding: 10px 15px;
+            padding: 12px 20px;
             border-radius: 50px;
-            border: 2px solid #3498db;
+            border: 2px solid var(--info);
             font-size: 1rem;
             background-color: white;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: 600;
         }
         
         select:hover {
-            border-color: #2980b9;
+            border-color: var(--dark);
             transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         }
         
-        .medals {
+        .achievements {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-            animation: slideIn 0.5s ease-out 0.8s both;
+            gap: 25px;
+            margin-top: 30px;
+            animation: slideIn 0.5s ease-out 0.9s both;
         }
         
-        .medal {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+        .achievement {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 14px;
             color: white;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
         }
         
-        .medal.gold {
+        .achievement::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+        }
+        
+        .achievement i {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .achievement.gold {
             background: linear-gradient(45deg, #FFD700, #D4AF37);
         }
         
-        .medal.silver {
+        .achievement.silver {
             background: linear-gradient(45deg, #C0C0C0, #A8A8A8);
         }
         
-        .medal.bronze {
+        .achievement.bronze {
             background: linear-gradient(45deg, #CD7F32, #8C6B46);
         }
         
-        .medal.inactive {
-            opacity: 0.3;
-            transform: scale(0.8);
+        .achievement.active {
+            transform: scale(1.1);
+            animation: achievementGlow 2s infinite;
+        }
+        
+        @keyframes achievementGlow {
+            0% { box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); }
+            50% { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); }
+            100% { box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); }
+        }
+        
+        .achievement.inactive {
+            opacity: 0.4;
+            transform: scale(0.9);
+            filter: grayscale(0.7);
         }
         
         footer {
             text-align: center;
-            padding: 20px;
-            background-color: #2c3e50;
+            padding: 25px;
+            background: linear-gradient(to right, var(--dark), #1a252f);
             color: white;
-            margin-top: 20px;
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.05"><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="white" stroke-width="2"/><path d="M30,30 L70,30 L70,70 L30,70 Z" fill="none" stroke="white" stroke-width="2"/><path d="M40,40 L60,40 L60,60 L40,60 Z" fill="none" stroke="white" stroke-width="2"/></svg>');
         }
         
         @media (max-width: 768px) {
             h1 {
-                font-size: 2rem;
+                font-size: 2.5rem;
+            }
+            
+            .stats-container {
+                flex-direction: column;
             }
             
             .game-board {
-                max-width: 300px;
+                max-width: 350px;
             }
             
             .cell {
-                font-size: 2.5rem;
+                font-size: 3rem;
             }
             
             .mera-ai-box {
@@ -487,42 +664,72 @@
                 width: fit-content;
             }
             
-            .score-board {
-                flex-direction: column;
-                gap: 10px;
+            .achievements {
+                flex-wrap: wrap;
             }
+        }
+        
+        /* Particle effects */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: floatParticle 15s infinite linear;
+        }
+        
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
         }
     </style>
 </head>
 <body>
+    <div class="particles" id="particles"></div>
+    
     <div class="container">
-        <a href="https://df53thor.github.io/mera-ai-0.4-beta/" target="_blank" class="mera-ai-box">
+        <a href="https://www.example.com" target="_blank" class="mera-ai-box">
             <img src="https://media.giphy.com/media/l0HlOBZcl7sbV6LnO/giphy.gif" alt="Mera AI">
             <span>Mera AI</span>
         </a>
         
         <header>
             <h1>XOX Oyunu</h1>
-            <p class="subtitle">Yapay Zeka Mera'ya Karşı - 5 Tur</p>
+            <p class="subtitle">Yapay Zeka Mera'ya Karşı - 5 Tur Macerası</p>
         </header>
         
         <div class="game-area">
-            <div class="score-board">
-                <div class="score-item">
-                    <div class="score-label">Sen</div>
-                    <div class="score-value" id="player-score">0</div>
+            <div class="stats-container">
+                <div class="stat-card win">
+                    <div class="stat-label">Senin Skorun</div>
+                    <div class="stat-value" id="player-score">0</div>
                 </div>
-                <div class="score-item">
-                    <div class="score-label">Tur</div>
-                    <div class="score-value" id="round">1/5</div>
+                <div class="stat-card">
+                    <div class="stat-label">Tur</div>
+                    <div class="stat-value" id="round">1/5</div>
                 </div>
-                <div class="score-item">
-                    <div class="score-label">Mera AI</div>
-                    <div class="score-value" id="ai-score">0</div>
+                <div class="stat-card lose">
+                    <div class="stat-label">Mera AI</div>
+                    <div class="stat-value" id="ai-score">0</div>
                 </div>
             </div>
             
-            <div class="round-info" id="round-info">1. Tur - Senin Hamlen!</div>
+            <div class="round-info" id="round-info">
+                <i class="fas fa-flag"></i> 1. Tur - Senin Hamlen!
+            </div>
             
             <div class="game-info">
                 <div class="player player-x active">
@@ -535,7 +742,11 @@
                 </div>
             </div>
             
-            <div class="message" id="message">İlk hamle senin! X ile başlıyorsun.</div>
+            <div class="message-container">
+                <div class="message" id="message">
+                    <i class="fas fa-chess-board"></i> İlk hamle senin! X ile başlıyorsun.
+                </div>
+            </div>
             
             <div class="game-board" id="board">
                 <div class="cell" data-index="0"></div>
@@ -549,20 +760,28 @@
                 <div class="cell" data-index="8"></div>
             </div>
             
-            <div class="medals">
-                <div class="medal gold inactive" id="gold-medal">
-                    <i class="fas fa-medal"></i>
+            <div class="achievements">
+                <div class="achievement gold inactive" id="gold-medal">
+                    <i class="fas fa-trophy"></i>
+                    <span>Şampiyon</span>
                 </div>
-                <div class="medal silver inactive" id="silver-medal">
+                <div class="achievement silver inactive" id="silver-medal">
                     <i class="fas fa-medal"></i>
+                    <span>İkinci</span>
                 </div>
-                <div class="medal bronze inactive" id="bronze-medal">
-                    <i class="fas fa-medal"></i>
+                <div class="achievement bronze inactive" id="bronze-medal">
+                    <i class="fas fa-award"></i>
+                    <span>Denge</span>
                 </div>
             </div>
             
             <div class="controls">
-                <button id="restart">Yeniden Başlat</button>
+                <button id="restart">
+                    <i class="fas fa-redo"></i> Yeniden Başlat
+                </button>
+                <button id="new-game">
+                    <i class="fas fa-play"></i> Yeni Maç
+                </button>
                 
                 <div class="difficulty">
                     <label for="difficulty">Zorluk:</label>
@@ -570,6 +789,7 @@
                         <option value="easy">Kolay</option>
                         <option value="medium" selected>Orta</option>
                         <option value="hard">Zor</option>
+                        <option value="impossible">Çok Zor</option>
                     </select>
                 </div>
             </div>
@@ -582,10 +802,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Oyun elementleri
             const board = document.getElementById('board');
             const cells = document.querySelectorAll('.cell');
             const message = document.getElementById('message');
             const restartBtn = document.getElementById('restart');
+            const newGameBtn = document.getElementById('new-game');
             const difficultySelect = document.getElementById('difficulty');
             const playerScoreElem = document.getElementById('player-score');
             const aiScoreElem = document.getElementById('ai-score');
@@ -596,7 +818,9 @@
             const bronzeMedal = document.getElementById('bronze-medal');
             const playerX = document.querySelector('.player-x');
             const playerO = document.querySelector('.player-o');
+            const particlesContainer = document.getElementById('particles');
             
+            // Oyun durumu
             let currentPlayer = 'X';
             let gameBoard = ['', '', '', '', '', '', '', '', ''];
             let gameActive = true;
@@ -605,26 +829,21 @@
             let aiScore = 0;
             let round = 1;
             const totalRounds = 5;
+            let gameHistory = [];
             
-            // Kazanma kombinasyonları
-            const winningConditions = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Yatay
-                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Dikey
-                [0, 4, 8], [2, 4, 6]             // Çapraz
-            ];
+            // Particle efekti oluştur
+            createParticles();
             
             // Oyunu başlat
             initGame();
             
-            // Hücre tıklama olayı
+            // Event listeners
             cells.forEach(cell => {
                 cell.addEventListener('click', handleCellClick);
             });
             
-            // Yeniden başlat butonu
             restartBtn.addEventListener('click', restartGame);
-            
-            // Zorluk seviyesi değişikliği
+            newGameBtn.addEventListener('click', newGame);
             difficultySelect.addEventListener('change', (e) => {
                 difficulty = e.target.value;
                 restartGame();
@@ -633,17 +852,15 @@
             function initGame() {
                 updateScores();
                 updateRoundInfo();
-                resetMedals();
+                resetAchievements();
+                createParticles();
             }
             
             function handleCellClick(e) {
                 const clickedCell = e.target;
                 const cellIndex = parseInt(clickedCell.getAttribute('data-index'));
                 
-                // Hücre zaten doluysa veya oyun aktif değilse işlem yapma
-                if (gameBoard[cellIndex] !== '' || !gameActive) {
-                    return;
-                }
+                if (gameBoard[cellIndex] !== '' || !gameActive) return;
                 
                 // İnsan hamlesini yap
                 makeMove(cellIndex, 'X');
@@ -655,14 +872,19 @@
                 // Mera'nın hamlesi
                 setTimeout(() => {
                     if (gameActive) {
-                        message.textContent = "Mera düşünüyor...";
+                        message.innerHTML = '<i class="fas fa-robot"></i> Mera düşünüyor...';
                         message.className = "message";
+                        
+                        // Zorluk seviyesine göre düşünme süresi
+                        const thinkTime = difficulty === 'impossible' ? 300 : 
+                                         difficulty === 'hard' ? 600 : 
+                                         difficulty === 'medium' ? 800 : 1000;
                         
                         setTimeout(() => {
                             makeAIMove();
                             setActivePlayer('X');
                             checkGameStatus();
-                        }, 800);
+                        }, thinkTime);
                     }
                 }, 500);
             }
@@ -671,6 +893,9 @@
                 gameBoard[index] = player;
                 cells[index].textContent = player;
                 cells[index].classList.add(player.toLowerCase());
+                
+                // Hamleyi kaydet
+                gameHistory.push({player, index, round});
             }
             
             function setActivePlayer(player) {
@@ -696,12 +921,15 @@
                     case 'hard':
                         moveIndex = getHardAIMove();
                         break;
+                    case 'impossible':
+                        moveIndex = getImpossibleAIMove();
+                        break;
                     default:
                         moveIndex = getMediumAIMove();
                 }
                 
                 makeMove(moveIndex, 'O');
-                message.textContent = "Sıra sende!";
+                message.innerHTML = '<i class="fas fa-chess-board"></i> Sıra sende!';
                 message.className = "message";
             }
             
@@ -714,7 +942,7 @@
             }
             
             function getMediumAIMove() {
-                // Önce kazanma fırsatını kontrol et
+                // Kazanma fırsatını kontrol et
                 for (let condition of winningConditions) {
                     const [a, b, c] = condition;
                     if (gameBoard[a] === 'O' && gameBoard[b] === 'O' && gameBoard[c] === '') return c;
@@ -722,7 +950,7 @@
                     if (gameBoard[b] === 'O' && gameBoard[c] === 'O' && gameBoard[a] === '') return a;
                 }
                 
-                // Sonra rakibin kazanma fırsatını engelle
+                // Rakibin kazanma fırsatını engelle
                 for (let condition of winningConditions) {
                     const [a, b, c] = condition;
                     if (gameBoard[a] === 'X' && gameBoard[b] === 'X' && gameBoard[c] === '') return c;
@@ -740,12 +968,11 @@
                     return emptyCorners[Math.floor(Math.random() * emptyCorners.length)];
                 }
                 
-                // Rastgele hamle yap
                 return getRandomMove();
             }
             
             function getHardAIMove() {
-                // Minimax algoritması kullanarak en iyi hamleyi bul
+                // Minimax algoritması
                 let bestScore = -Infinity;
                 let bestMove;
                 
@@ -765,8 +992,12 @@
                 return bestMove;
             }
             
+            function getImpossibleAIMove() {
+                // %90 ihtimalle en iyi hamleyi, %10 rastgele hamle yap
+                return Math.random() < 0.9 ? getHardAIMove() : getRandomMove();
+            }
+            
             function minimax(board, depth, isMaximizing) {
-                // Oyunun bitip bitmediğini kontrol et
                 const result = checkWinner();
                 if (result !== null) {
                     if (result === 'O') return 10 - depth;
@@ -816,12 +1047,12 @@
                     }
                     
                     if (winner === 'X') {
-                        message.textContent = `Tebrikler! ${round}. turu kazandın!`;
+                        message.innerHTML = `<i class="fas fa-trophy"></i> Tebrikler! ${round}. turu kazandın!`;
                         message.className = "message win";
                         playerScore++;
                         celebrateWin();
                     } else {
-                        message.textContent = `Mera ${round}. turu kazandı!`;
+                        message.innerHTML = `<i class="fas fa-robot"></i> Mera ${round}. turu kazandı!`;
                         message.className = "message lose";
                         aiScore++;
                     }
@@ -837,15 +1068,14 @@
                         } else {
                             endGame();
                         }
-                    }, 2000);
+                    }, 2500);
                     
                     return true;
                 } else if (!gameBoard.includes('')) {
                     gameActive = false;
-                    message.textContent = `${round}. tur berabere!`;
+                    message.innerHTML = `<i class="fas fa-handshake"></i> ${round}. tur berabere!`;
                     message.className = "message draw";
                     
-                    // Bir sonraki tura geç
                     setTimeout(() => {
                         if (round < totalRounds) {
                             round++;
@@ -854,7 +1084,7 @@
                         } else {
                             endGame();
                         }
-                    }, 2000);
+                    }, 2500);
                     
                     return true;
                 }
@@ -863,33 +1093,12 @@
             }
             
             function celebrateWin() {
-                // Kazanma animasyonu
-                const confettiCount = 100;
-                const confettiColors = ['#f1c40f', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6'];
+                // Konfeti efekti
+                createConfetti();
                 
-                for (let i = 0; i < confettiCount; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.style.position = 'fixed';
-                    confetti.style.width = '10px';
-                    confetti.style.height = '10px';
-                    confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-                    confetti.style.borderRadius = '50%';
-                    confetti.style.top = '0';
-                    confetti.style.left = Math.random() * 100 + 'vw';
-                    confetti.style.opacity = '0';
-                    confetti.style.zIndex = '9999';
-                    document.body.appendChild(confetti);
-                    
-                    // Animasyon
-                    const animation = confetti.animate([
-                        { top: '0', opacity: 1, transform: 'rotate(0deg)' },
-                        { top: '100vh', opacity: 0, transform: 'rotate(360deg)' }
-                    ], {
-                        duration: Math.random() * 3000 + 2000,
-                        easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
-                    });
-                    
-                    animation.onfinish = () => confetti.remove();
+                // Titreşim efekti (eğer destekleniyorsa)
+                if (navigator.vibrate) {
+                    navigator.vibrate([100, 50, 100]);
                 }
             }
             
@@ -914,7 +1123,7 @@
                     cell.classList.remove('x', 'o', 'win');
                 });
                 
-                message.textContent = `${round}. tur - Senin hamlen!`;
+                message.innerHTML = `<i class="fas fa-chess-board"></i> ${round}. tur - Senin hamlen!`;
                 message.className = "message";
             }
             
@@ -922,10 +1131,18 @@
                 playerScore = 0;
                 aiScore = 0;
                 round = 1;
+                gameHistory = [];
                 updateScores();
                 updateRoundInfo();
                 resetBoard();
-                resetMedals();
+                resetAchievements();
+                createParticles();
+            }
+            
+            function newGame() {
+                restartGame();
+                message.innerHTML = '<i class="fas fa-chess-board"></i> Yeni maç başladı! İlk hamle senin.';
+                message.className = "message";
             }
             
             function updateScores() {
@@ -935,38 +1152,95 @@
             }
             
             function updateRoundInfo() {
-                roundInfoElem.textContent = `${round}. Tur - ${currentPlayer === 'X' ? 'Senin Hamlen!' : 'Mera Hamlesi'}`;
+                const icons = ['fa-flag', 'fa-chess', 'fa-gamepad', 'fa-dice', 'fa-crown'];
+                roundInfoElem.innerHTML = `<i class="fas ${icons[round-1]}"></i> ${round}. Tur - ${currentPlayer === 'X' ? 'Senin Hamlen!' : 'Mera Hamlesi'}`;
             }
             
-            function resetMedals() {
+            function resetAchievements() {
+                goldMedal.classList.remove('active');
                 goldMedal.classList.add('inactive');
+                silverMedal.classList.remove('active');
                 silverMedal.classList.add('inactive');
+                bronzeMedal.classList.remove('active');
                 bronzeMedal.classList.add('inactive');
             }
             
             function endGame() {
                 // Madalyaları göster
                 if (playerScore > aiScore) {
-                    message.textContent = `Tebrikler! 5 tur sonunda ${playerScore}-${aiScore} kazandın!`;
+                    message.innerHTML = `<i class="fas fa-trophy"></i> Tebrikler! 5 tur sonunda ${playerScore}-${aiScore} kazandın!`;
                     message.className = "message win";
                     goldMedal.classList.remove('inactive');
+                    goldMedal.classList.add('active');
+                    createConfetti();
                 } else if (aiScore > playerScore) {
-                    message.textContent = `Maalesef! 5 tur sonunda ${aiScore}-${playerScore} kaybettin!`;
+                    message.innerHTML = `<i class="fas fa-robot"></i> Maalesef! 5 tur sonunda ${aiScore}-${playerScore} kaybettin!`;
                     message.className = "message lose";
                     silverMedal.classList.remove('inactive');
+                    silverMedal.classList.add('active');
                 } else {
-                    message.textContent = `5 tur sonunda ${playerScore}-${aiScore} berabere!`;
+                    message.innerHTML = `<i class="fas fa-handshake"></i> 5 tur sonunda ${playerScore}-${aiScore} berabere!`;
                     message.className = "message draw";
                     bronzeMedal.classList.remove('inactive');
+                    bronzeMedal.classList.add('active');
                 }
                 
                 // Oyunu tamamen sıfırla butonu
                 setTimeout(() => {
-                    restartBtn.textContent = "Yeni Maç Başlat";
+                    newGameBtn.textContent = "Yeni Maç Başlat";
                 }, 1000);
             }
+            
+            function createParticles() {
+                particlesContainer.innerHTML = '';
+                for (let i = 0; i < 30; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.animationDelay = `${Math.random() * 15}s`;
+                    particle.style.animationDuration = `${15 + Math.random() * 10}s`;
+                    particlesContainer.appendChild(particle);
+                }
+            }
+            
+            function createConfetti() {
+                const confettiCount = 150;
+                const confettiColors = ['#f1c40f', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6', '#e67e22'];
+                
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = `${Math.random() * 10 + 5}px`;
+                    confetti.style.height = `${Math.random() * 10 + 5}px`;
+                    confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.top = '-10px';
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.opacity = '0';
+                    confetti.style.zIndex = '9999';
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    document.body.appendChild(confetti);
+                    
+                    const animation = confetti.animate([
+                        { top: '-10px', opacity: 0, transform: `rotate(0deg) scale(0.5)` },
+                        { top: '25%', opacity: 1, transform: `rotate(180deg) scale(1)` },
+                        { top: '100vh', opacity: 0, transform: `rotate(360deg) scale(0.5)` }
+                    ], {
+                        duration: Math.random() * 3000 + 2000,
+                        easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
+                    });
+                    
+                    animation.onfinish = () => confetti.remove();
+                }
+            }
+            
+            // Kazanma kombinasyonları
+            const winningConditions = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Yatay
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Dikey
+                [0, 4, 8], [2, 4, 6]             // Çapraz
+            ];
         });
     </script>
 </body>
-
 </html>
