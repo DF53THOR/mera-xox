@@ -1,1 +1,124 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>MERA AI – PC Analiz Asistanı</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <h1>MERA AI</h1>
+  <p>Gelişmiş PC Analiz Sistemi</p>
+</div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+
+  <!-- HEADER -->
+  <header>
+    <h2>MERA AI</h2>
+    <span class="badge">FULL SYSTEM</span>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- CHAT -->
+    <section id="chatSection">
+      <div id="chatBox"></div>
+
+      <div id="chatInput">
+        <textarea id="userInput" placeholder="Bir şey sor..." rows="2"></textarea>
+        <button id="sendBtn">Gönder</button>
+      </div>
+    </section>
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+
+      <div class="menu">
+        <button data-panel="pcPanel">🧩 PC Builder</button>
+        <button data-panel="gamePanel">🎮 FPS Analizi</button>
+        <button data-panel="upgradePanel">🚀 Upgrade</button>
+        <button data-panel="aboutPanel">ℹ️ Hakkında</button>
+      </div>
+
+      <!-- PANELS -->
+
+      <div id="pcPanel" class="panel hidden">
+        <h3>PC Builder</h3>
+
+        <label>İşlemci</label>
+        <select id="cpuSelect"></select>
+
+        <label>Ekran Kartı</label>
+        <select id="gpuSelect"></select>
+
+        <label>RAM</label>
+        <select id="ramSelect">
+          <option value="0">8 GB</option>
+          <option value="1">16 GB</option>
+          <option value="2">32 GB</option>
+        </select>
+
+        <button id="pcAnalyzeBtn">Sistemi Analiz Et</button>
+      </div>
+
+      <div id="gamePanel" class="panel hidden">
+        <h3>Oyun FPS Analizi</h3>
+
+        <label>Oyun</label>
+        <select id="gameSelect"></select>
+
+        <label>Çözünürlük</label>
+        <select id="resolutionSelect">
+          <option value="1080p">1080p</option>
+          <option value="1440p">1440p</option>
+          <option value="4k">4K</option>
+        </select>
+
+        <label>Grafik Ayarı</label>
+        <select id="qualitySelect">
+          <option value="low">Düşük</option>
+          <option value="medium">Orta</option>
+          <option value="high">Yüksek</option>
+          <option value="ultra">Ultra</option>
+        </select>
+
+        <button id="fpsBtn">FPS Hesapla</button>
+      </div>
+
+      <div id="upgradePanel" class="panel hidden">
+        <h3>Upgrade Önerisi</h3>
+        <p>Sisteminize göre en mantıklı yükseltmeyi hesaplar.</p>
+        <button id="upgradeBtn">Öneri Al</button>
+      </div>
+
+      <div id="aboutPanel" class="panel hidden">
+        <h3>MERA AI</h3>
+        <p>
+          MERA AI, PC donanım analizi, FPS tahmini ve
+          upgrade önerileri sunan gelişmiş bir web tabanlı asistandır.
+        </p>
+      </div>
+
+    </aside>
+
+  </main>
+
+</div>
+
+<!-- JS FILES (SIRA ÖNEMLİ) -->
+<script src="data.js"></script>
+<script src="fpsEngine.js"></script>
+<script src="upgradeEngine.js"></script>
+<script src="chatAI.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
